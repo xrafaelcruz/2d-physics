@@ -1,10 +1,19 @@
-import styles from './Canvas.module.css'
-import useCanvas from './useCanvas';
+import { useEffect, useRef } from 'react'
+
+import { start } from './lib'
+
+import styles from './index.module.css'
 
 export default function Canvas() {
-  useCanvas();
+  const ref = useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    if (ref.current) {
+      start(ref.current)
+    }
+  }, [])
 
   return (
-    <canvas id="canvas" className={styles.canvas} />
+    <canvas ref={ref} className={styles.canvas} />
   )
 }
