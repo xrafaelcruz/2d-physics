@@ -1,15 +1,17 @@
-import { TBallPositions, TBall } from './types'
+import { TInitialBall, TBall } from './types'
 
 /**
  * Cria uma bola nova.
- * @param positions Posição da bola
+ * @param databaseBall Bolas salvas na base de dados
  */
 export const createBall = (
-    positions: TBallPositions
+    initialBall: TInitialBall
 ): TBall => {
     return {
-        x: positions.x,
-        y: positions.y
+        ...initialBall,
+        move: () => {
+            console.log('move')
+        }
     }
 }
 
@@ -37,13 +39,25 @@ export const drawBall = (
  */
 export const loadBalls = (
     ctx: CanvasRenderingContext2D, 
-    ballsPositions: TBallPositions[]
-) => {
-    return ballsPositions.map(positions => {
-        const ball = createBall(positions);
+    initialBalls: TInitialBall[]
+): TBall[] => {
+    return initialBalls.map(databaseBall => {
+        const ball = createBall(databaseBall)
 
         drawBall(ctx, ball)
 
         return ball
     })
+}
+
+/**
+ * Retorna da lista de bolas, a bola que corresponde ao playerId passado por parâmetro.
+ * @param balls Lista de bolas
+ * @param playerId Id do player
+ */
+export const getMyBall = (
+    balls: TBall[], 
+    playerId: number
+): TBall | undefined  => {
+    return balls.find(ball => ball.playerId === playerId)
 }

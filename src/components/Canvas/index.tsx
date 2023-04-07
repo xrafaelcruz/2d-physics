@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react'
 
+import { database } from './database'
+
 import { start } from './lib'
 
 import styles from './index.module.css'
@@ -9,7 +11,16 @@ export default function Canvas() {
 
   useEffect(() => {
     if (ref.current) {
-      start(ref.current)
+      start(
+        ref.current, 
+        {
+          balls: database.balls.map(ball => ({
+            playerId: ball.dataPlayerId,
+            x: ball.ballPositionX,
+            y: ball.ballPositionY
+          }))
+        }
+      )
     }
   }, [])
 
