@@ -1,9 +1,5 @@
-export type TInitialBall = {
+export type TBall = {
     playerId: number
     x: number
     y: number
-}
-
-export type TBall = TInitialBall & {
-    move: () => void
 }

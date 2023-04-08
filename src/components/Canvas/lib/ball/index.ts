@@ -1,28 +1,15 @@
-import { TInitialBall, TBall } from './types'
-
-/**
- * Cria uma bola nova.
- * @param databaseBall Bolas salvas na base de dados
- */
-export const createBall = (
-    initialBall: TInitialBall
-): TBall => {
-    return {
-        ...initialBall,
-        move: () => {
-            console.log('move')
-        }
-    }
-}
+import { TArrowKeys } from '../listeners/types'
+import { TPlayer } from '../player/types'
+import * as t from './types'
 
 /**
  * Desenha a bola no canvas.
- * @param ctx Canvas context 2D
- * @param ball Objeto Bola
+ * @param ctx
+ * @param ball
  */
 export const drawBall = (
     ctx: CanvasRenderingContext2D, 
-    ball: TBall
+    ball: t.TBall
 ) => {
     ctx.beginPath()
     ctx.arc(ball.x, ball.y, 10, 0, 2*Math.PI)
@@ -33,31 +20,43 @@ export const drawBall = (
 }
 
 /**
- * Cria e desenha uma bola nova para cada item de ballsPositions.
- * @param ctx Canvas context 2D
- * @param ballsPositions Array contendo a posição de cada bola
+ * Retorna o index da bola do player.
+ * @param balls
+ * @param playerId
  */
-export const loadBalls = (
-    ctx: CanvasRenderingContext2D, 
-    initialBalls: TInitialBall[]
-): TBall[] => {
-    return initialBalls.map(databaseBall => {
-        const ball = createBall(databaseBall)
+export const getPlayerBallIndex = (
+    balls: t.TBall[], 
+    playerId: TPlayer['id']
+): number  => {
+    const index = balls.findIndex(ball => ball.playerId === playerId)
+    if (index >= 0) return index
 
-        drawBall(ctx, ball)
-
-        return ball
-    })
+    balls.push({ playerId, x: 10, y: 10 })
+    return balls.length - 1
 }
 
 /**
- * Retorna da lista de bolas, a bola que corresponde ao playerId passado por parâmetro.
- * @param balls Lista de bolas
- * @param playerId Id do player
+ * Atualiza a posição de uma bola com base nas teclas pressionadas.
+ * @param ball 
+ * @param arrowKeys 
  */
-export const getMyBall = (
-    balls: TBall[], 
-    playerId: number
-): TBall | undefined  => {
-    return balls.find(ball => ball.playerId === playerId)
+export const updateBallPosition = (
+    ball: t.TBall, 
+    arrowKeys: TArrowKeys
+) => {
+    if (arrowKeys.up) {
+        ball.y--
+    }
+
+    if (arrowKeys.down) {
+        ball.y++
+    }
+
+    if (arrowKeys.left) {
+        ball.x--
+    }
+
+    if (arrowKeys.right) {
+        ball.x++
+    }
 }

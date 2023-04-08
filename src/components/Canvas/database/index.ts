@@ -12,5 +12,10 @@ export const database: TDatabase = {
             ballPositionX: 100,
             ballPositionY: 100
         }
-    ]
+    ],
+    players: [
+        { id: 1 },
+        { id: 2 },
+    ],
+    currentPlayer: { id: 1 }
 }

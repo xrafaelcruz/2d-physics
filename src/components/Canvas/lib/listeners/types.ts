@@ -1,5 +1,12 @@
-import { TBall } from "../ball/types"
+import { TPlayer } from "../player/types"
+
+export type TArrowKeys = {
+    up: boolean
+    down: boolean
+    right: boolean
+    left: boolean
+}
 
 export type TAddListenersArgs = {
-    ball?: TBall
+    player: TPlayer
 }
